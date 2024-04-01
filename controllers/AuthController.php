@@ -16,7 +16,7 @@ class AuthController
     public function login(): void
     {
         $errors = [];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password']) ) {
             $username = $_POST['username'];
             $password = $_POST['password'];
 
@@ -25,10 +25,11 @@ class AuthController
                 $_SESSION['admin'] = $user;
                 header('Location: index.php?action=');
             } else {
-                $errors[] = 'Invalid username or password';
+                header('Location: index.php?action=loginPage');
                 exit;
             }
         } else {
+            require_once "views/login.php";
             $errors[] = 'Invalid username or password';
         }
     }
